@@ -89,7 +89,7 @@ def пул_источников(ход, дейст, тело):
     for д in дейст:
         части += [str(д.get("вывод") or ""), str(д.get("команда") or ""), str(д.get("запрос") or ""), str(д.get("что") or "")]
     сегодня = time.time() - 36 * 3600
-    for п in glob.glob(os.path.join(КОРЕНЬ, "research", "*.md")) + glob.glob(os.path.join(КОРЕНЬ, "ответы", "реестр-*.md")):
+    for п in glob.glob(os.path.join(КОРЕНЬ, "research", "*.md")) + glob.glob(os.path.join(КОРЕНЬ, "ответы", "реестры", "реестр-*.md")):
         try:
             if os.path.getmtime(п) >= сегодня:
                 части.append(open(п, encoding="utf-8", errors="ignore").read())
@@ -181,9 +181,9 @@ def проверки(путь, ход, лимит, режим_отчёт):
                       else "нет источника у: %s" % ", ".join(уникальные[:10])))
 
     # 7 реестр
-    реестр_путь = os.path.join(КОРЕНЬ, "ответы", "реестр-%s.md" % ход)
+    реестр_путь = os.path.join(КОРЕНЬ, "ответы", "реестры", "реестр-%s.md" % ход)
     if not os.path.exists(реестр_путь):
-        результат.append(("7 реестр пунктов запроса", False, "нет файла ответы/реестр-%s.md" % ход))
+        результат.append(("7 реестр пунктов запроса", False, "нет файла ответы/реестры/реестр-%s.md" % ход))
     else:
         пункты = re.findall(r"(?m)^\s*[-*|]?\s*(л\d+)\b", open(реестр_путь, encoding="utf-8").read())
         пункты = list(dict.fromkeys(пункты))
