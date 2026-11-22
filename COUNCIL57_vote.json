@@ -1,0 +1,248 @@
+{
+ "кандидаты": [
+  {
+   "id": "S2",
+   "name": "Rule Persistence Across Compression",
+   "what": "Techniques to keep instruction files (AGENTS.md, CLAUDE.md) loaded and reloaded after context compaction, ensuring rules survive compression.",
+   "sources": [
+    "https://dev.to/mikeadolan/i-wrote-500-lines-of-rules-for-claude-code-heres-how-i-made-it-actually-follow-them-3c8",
+    "https://github.com/NodeNestor",
+    "https://github.com/NodeNestor/claude-rolling-context",
+    "https://github.com/anthropics/claude-code/issues/6235",
+    "https://github.com/littlebearapps/contextdocs",
+    "https://github.com/runvendo/vendo"
+   ],
+   "leaders": [
+    "L1",
+    "L10",
+    "L6",
+    "L7",
+    "L9"
+   ],
+   "очки": 30
+  },
+  {
+   "id": "S1",
+   "name": "Policy Enforcement Middleware",
+   "what": "Runtime layers that validate or filter LLM outputs against configurable policies to block prompt injection and enforce rules.",
+   "sources": [
+    "https://arxiv.org/html/2506.05739",
+    "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+    "https://github.com/Carlos-Projects/promptarmor",
+    "https://github.com/topics/llm-security-compliance-prompt-injection?o=asc&s=stars",
+    "https://www.armosec.io/blog/indrect-prompt-injection-defense",
+    "https://www.mdpi.com/2076-3417/16/15/7662"
+   ],
+   "leaders": [
+    "L10"
+   ],
+   "очки": 11
+  },
+  {
+   "id": "S4",
+   "name": "Prompt Structuring & Prioritization",
+   "what": "Design patterns splitting prompts by role/scenario and using freshness/specificity rules to resolve conflicts.",
+   "sources": [
+    "https://community.openai.com/t/system-and-developer-roles-in-messages-and-instructions-in-responses-create/1370516",
+    "https://community.openai.com/t/using-multiple-prompts-openai-calls-for-chatbot/628618"
+   ],
+   "leaders": [
+    "L3"
+   ],
+   "очки": 9
+  },
+  {
+   "id": "S5",
+   "name": "State Machine & Workflow Persistence",
+   "what": "Frameworks like LangGraph that manage agent state, checkpoints, and deterministic execution across steps.",
+   "sources": [
+    "https://dev.to/jamesli/langgraph-state-machines-managing-complex-agent-task-flows-in-production-36f4",
+    "https://docs.langchain.com/oss/python/langgraph/overview",
+    "https://docs.langchain.com/oss/python/langgraph/persistence",
+    "https://roiscale.ai/articles/d084adac-5585-4d14-b7bf-d2f7858006f5/agents-are-just-state-machines-how-i-rebuilt-a-langgraph-workflow-from-scratch",
+    "https://www.youtube.com/watch?v=9BPCV5TYPmg"
+   ],
+   "leaders": [
+    "L6"
+   ],
+   "очки": 8
+  },
+  {
+   "id": "S3",
+   "name": "Auditing & Observability",
+   "what": "Systems that log, sign, and monitor LLM calls, providing traceability and detection of rule violations.",
+   "sources": [
+    "https://github.com/BerriAI/litellm/discussions/25237",
+    "https://github.com/sgl-project/sglang/issues/10218",
+    "https://github.com/topics/agent-audit",
+    "https://github.com/topics/audit-trail",
+    "https://github.com/topics/audit-trail?l=rust"
+   ],
+   "leaders": [
+    "L4",
+    "L5"
+   ],
+   "очки": 2
+  },
+  {
+   "id": "S6",
+   "name": "Deterministic Blueprint Framework",
+   "what": "Approach separating workflow blueprint from model, enabling repeatable, rule‑driven execution.",
+   "sources": [
+    "https://arxiv.org/html/2508.02721v1"
+   ],
+   "leaders": [
+    "L10"
+   ],
+   "очки": 0
+  },
+  {
+   "id": "S7",
+   "name": "Compression Hook Management",
+   "what": "Hooks and bug fixes that run before or during context compression to preserve critical rule definitions.",
+   "sources": [
+    "https://github.com/langchain-ai/langgraph/issues/5628"
+   ],
+   "leaders": [
+    "L1"
+   ],
+   "очки": 0
+  }
+ ],
+ "голоса": [
+  {
+   "leader": "L1",
+   "top3": [
+    "S2",
+    "S1",
+    "S4"
+   ],
+   "reason": "S2 сохраняет правила при сжатии, S1 блокирует нарушения в реальном времени, S4 упорядочивает запросы, уменьшая конфликты и забывание.",
+   "against": [
+    "S7"
+   ],
+   "risk": "Риск: необходимость синхронного обновления файлов правил, возможные задержки при их повторной загрузке."
+  },
+  {
+   "leader": "L2",
+   "top3": [
+    "S2",
+    "S4",
+    "S3"
+   ],
+   "reason": "S2 решает H1 (сжатие) через файлы. S4 устраняет H3 (конфликты) приоритизацией. S3 обеспечивает H5 (аудит) квитанциями. Остальные нарушают ограничения (хуки, платные фреймворки).",
+   "against": [
+    "S7",
+    "S5",
+    "S1"
+   ],
+   "risk": "Платформа может игнорировать файлы при агрессивном сжатии, а заказчик не сможет детерминированно валидировать вывод без внешних хуков."
+  },
+  {
+   "leader": "L3",
+   "top3": [
+    "S2",
+    "S1",
+    "S5"
+   ],
+   "reason": "S2 сохраняет правила при сжатии контекста, S1 блокирует нарушения в реальном времени, S5 обеспечивает детерминированный поток и сохранение состояния без внешних хуков.",
+   "against": [
+    "S7"
+   ],
+   "risk": "Зависимость от корректной реализации middleware; возможные задержки и ложные срабатывания."
+  },
+  {
+   "leader": "L4",
+   "top3": [
+    "S2",
+    "S4",
+    "S3"
+   ],
+   "reason": "S2 решает корневую причину (потеря правил при сжатии). S4 устраняет конфликты и перегрузку. S3 обеспечивает детерминированный аудит нарушений без внешних хуков.",
+   "against": [
+    "S7"
+   ],
+   "risk": "Платформа может игнорировать файлы при агрессивном сжатии, а заказчик не будет вручную вставлять правила в каждый новый диалог."
+  },
+  {
+   "leader": "L5",
+   "top3": [
+    "S2",
+    "S5",
+    "S1"
+   ],
+   "reason": "S2 сохраняет правила при сжатии, S5 обеспечивает детерминированность и квитанции, S1 фильтрует вывод. Все работают в stdlib без хуков.",
+   "against": [
+    "S7",
+    "S6"
+   ],
+   "risk": "S2 требует ручной перезагрузки файла агентом, что может игнорироваться при перегрузке контекста."
+  },
+  {
+   "leader": "L6",
+   "top3": [
+    "S2",
+    "S5",
+    "S1"
+   ],
+   "reason": "S2 решает корневую причину (сжатие контекста), S5 обеспечивает детерминизм и состояние, S1 добавляет контроль. Все работают в рамках ограничений (файлы, stdlib).",
+   "against": [
+    "S7"
+   ],
+   "risk": "Невозможность гарантировать 100% соблюдение без внешних хуков; модель может игнорировать правила даже при их наличии в контексте."
+  },
+  {
+   "leader": "L7",
+   "top3": [
+    "S2",
+    "S4",
+    "S1"
+   ],
+   "reason": "S2 решает корневую причину (потеря правил при сжатии). S4 устраняет конфликты и перегрузку. S1 обеспечивает детерминированный контроль вывода без внешних хуков.",
+   "against": [
+    "S7"
+   ],
+   "risk": "Невозможность гарантировать 100% соблюдение без внешних хуков; модель может игнорировать правила даже при их наличии в контексте."
+  },
+  {
+   "leader": "L8",
+   "top3": [
+    "S2",
+    "S4",
+    "S5"
+   ],
+   "reason": "S2 решает H1/H2 (сохранение правил при сжатии). S4 устраняет H3/H4 (конфликты, приоритеты). S5 обеспечивает детерминизм (H5). Все работают в stdlib/файлах.",
+   "against": [
+    "S7",
+    "S1"
+   ],
+   "risk": "S2 требует ручной перезагрузки файла агентом; если агент проигнорирует команду, правила снова потеряются при сжатии."
+  },
+  {
+   "leader": "L9",
+   "top3": [
+    "S2",
+    "S1",
+    "S5"
+   ],
+   "reason": "S2 гарантирует сохранение правил после сжатия, S1 обеспечивает проверку вывода в реальном времени, S5 обеспечивает устойчивый контроль состояния и повторяемость.",
+   "against": [
+    "S7"
+   ],
+   "risk": "Сложность интеграции S1 и S5 может вызвать задержки и потребовать ручного тестирования, увеличивая риск ошибок в продакшене."
+  },
+  {
+   "leader": "L10",
+   "top3": [
+    "S2",
+    "S1",
+    "S5"
+   ],
+   "reason": "S2 сохраняет правила при сжатии контекста, S1 проверяет каждый вывод без внешних сервисов, S5 обеспечивает детерминированные шаги и контроль состояния, всё реализуемо на stdlib.",
+   "against": [
+    "S7"
+   ],
+   "risk": "Необходима интеграция middleware, что может потребовать модификаций платформы без официальных хуков."
+  }
+ ]
+}
